@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:beans="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+
+
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd"
+
+       default-lazy-init="true">
+
+    <description>shiro的配置</description>
+    <!-- 配置shiro的核心Filter-->
+    <!--<bean id="shiroFilter"-->
+          <!--class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">-->
+        <!--&lt;!&ndash; 安全管理器 &ndash;&gt;-->
+        <!--<property name="securityManager" ref="securityManager"/>-->
+        <!--&lt;!&ndash; 未认证跳转的页面&ndash;&gt;-->
+        <!--<property name="loginUrl" value="/login.html"/>-->
+        <!--&lt;!&ndash; 登录页页面&ndash;&gt;-->
+        <!--<property name="successUrl" value="/index.html"/>-->
+        <!--&lt;!&ndash; 认证后没有权限跳转页面&ndash;&gt;-->
+        <!--<property name="unauthorizedUrl" value="/unauthorized.html"/>-->
+        <!--&lt;!&ndash; shiro URL控制过滤器规则 &ndash;&gt;-->
+        <!--<property name="filterChainDefinitions">-->
+            <!--<value>-->
+                <!--&lt;!&ndash;审核需要放开的资源&ndash;&gt;-->
+                <!--&lt;!&ndash;审核页面&ndash;&gt;-->
+                <!--/apply/** = anon-->
+                <!--/api/demo/freetrial/** = anon-->
+                <!--&lt;!&ndash;审核请求的后台资源&ndash;&gt;-->
+                <!--/api/tool/account/sendemail/** = anon-->
+                <!--/api/tool/account/findinfo/** = anon-->
+                <!--/api/tool/account/enable/** = anon-->
+                <!--/api/tool/ioaccount/sendemail/** = anon-->
+                <!--/api/tool/adiaccount/sendemail = anon-->
+                <!--/api/tool/ioaccount/findinfo/** = anon-->
+                <!--/api/tool/ioaccount/enable/** = anon-->
+                <!--/api/tool/etlvsrealtime/** = anon-->
+                <!--/api/tool/userlog/** = anon-->
+                <!--/api/tool/find = anon-->
+                <!--/api/report/* = anon-->
+                <!--/api/report/support/* = anon-->
+                <!--/api/devops/** = anon-->
+                <!--/api/app/tag/task/distribute/** = anon-->
+                <!--/api/office/news/img/** = anon-->
+                <!--/api/app/tag/task/listaudited = anon-->
+                <!--/api/message/sms/verifycode/send = anon-->
+
+                <!--/login.html* = anon-->
+                <!--/js/** = anon-->
+                <!--/data/* = anon-->
+                <!--/style/** = anon-->
+                <!--/styles/** = anon-->
+                <!--/images/** = anon-->
+                <!--/fonts/** = anon-->
+                <!--/com/** = anon-->
+                <!--/src/** = anon-->
+                <!--/api/office/login = anon-->
+
+                <!--/** = authc-->
+            <!--</value>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <!--&lt;!&ndash; 安全管理器 &ndash;&gt;-->
+    <!--<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">-->
+       <!--<property name="realm" ref="userRealm"/>-->
+        <!--&lt;!&ndash;<property name="cacheManager" ref="cacheManager"/>&ndash;&gt;-->
+        <!--&lt;!&ndash; 定义要使用的session管理器 &ndash;&gt;-->
+        <!--<property name="sessionManager" ref="sessionManager"/>-->
+        <!--&lt;!&ndash;<property name="rememberMeManager" ref="rememberMeManager"/>&ndash;&gt;-->
+    <!--</bean>-->
+    <!---->
+    <!--&lt;!&ndash; realm&ndash;&gt;-->
+    <!--<bean id="userRealm" class="com.reyun.office.login.realm.UserRealm">-->
+        <!--<property name="credentialsMatcher">-->
+            <!--<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">-->
+                <!--<property name="hashAlgorithmName" value="MD5"></property> &lt;!&ndash; 加密算法的名称 &ndash;&gt;-->
+                <!--&lt;!&ndash; <property name="hashIterations" value="1024"></property> &ndash;&gt; &lt;!&ndash; 配置加密的次数 &ndash;&gt;-->
+            <!--</bean>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <!--<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor">-->
+    <!--</bean>-->
+
+
+    <!--&lt;!&ndash; AOP式方法级权限检查  &ndash;&gt;-->
+    <!--<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">-->
+        <!--<property name="proxyTargetClass" value="true" />-->
+    <!--</bean>-->
+    <!--<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">-->
+        <!--<property name="securityManager" ref="securityManager"/>-->
+    <!--</bean>-->
+
+    <!--&lt;!&ndash; 定义Session ID生成管理器 &ndash;&gt;-->
+    <!--<bean id="sessionIdGenerator" class="org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator" />-->
+    <!--&lt;!&ndash; 配置Session DAO的操作处理 &ndash;&gt;-->
+    <!--<bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">-->
+        <!--&lt;!&ndash; 设置session缓存的名字，这个名字可以任意 &ndash;&gt;-->
+        <!--<property name="activeSessionsCacheName" value="shiro-activeSessionCache"/>-->
+        <!--&lt;!&ndash; 定义该Session DAO操作中所使用的ID生成器 &ndash;&gt;-->
+        <!--<property name="sessionIdGenerator" ref="sessionIdGenerator"/>-->
+    <!--</bean>-->
+
+    <!--&lt;!&ndash; 会话Cookie模板 &ndash;&gt;-->
+    <!--<bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">-->
+        <!--<constructor-arg value="sid"/>-->
+        <!--<property name="httpOnly" value="true"/>-->
+        <!--<property name="maxAge" value="-1"/>-->
+    <!--</bean>-->
+
+    <!--&lt;!&ndash; 定义会话管理器的操作 &ndash;&gt;-->
+    <!--<bean id="sessionManager"-->
+          <!--class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">-->
+        <!--&lt;!&ndash; 定义的是全局的session会话超时时间，此操作会覆盖web.xml文件中的超时时间配置 &ndash;&gt;-->
+        <!--<property name="globalSessionTimeout" value="86400000"/>-->
+        <!--&lt;!&ndash; 删除所有无效的Session对象，此时的session被保存在了内存里面 &ndash;&gt;-->
+        <!--<property name="deleteInvalidSessions" value="true"/>-->
+        <!--&lt;!&ndash; 定义要使用的无效的Session定时调度器 &ndash;&gt;-->
+        <!--<property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>-->
+        <!--&lt;!&ndash; 需要让此session可以使用该定时调度器进行检测 &ndash;&gt;-->
+        <!--<property name="sessionValidationSchedulerEnabled" value="true"/>-->
+        <!--&lt;!&ndash; 定义Session可以进行序列化的工具类 &ndash;&gt;-->
+        <!--<property name="sessionDAO" ref="sessionDAO"/>-->
+        <!--&lt;!&ndash; 所有的session一定要将id设置到Cookie之中，需要提供有Cookie的操作模版 &ndash;&gt;-->
+        <!--<property name="sessionIdCookie" ref="sessionIdCookie"/>-->
+        <!--&lt;!&ndash; 定义sessionIdCookie模版可以进行操作的启用 &ndash;&gt;-->
+        <!--<property name="sessionIdCookieEnabled" value="true"/>-->
+    <!--</bean>-->
+
+    <!--&lt;!&ndash; 配置session的定时验证检测程序类，以让无效的session释放 &ndash;&gt;-->
+    <!--<bean id="sessionValidationScheduler"-->
+          <!--class="org.apache.shiro.session.mgt.quartz.QuartzSessionValidationScheduler">-->
+        <!--&lt;!&ndash; 设置session的失效扫描间隔，单位为毫秒 &ndash;&gt;-->
+        <!--<property name="sessionValidationInterval" value="86400000"/>-->
+        <!--&lt;!&ndash; 随后还需要定义有一个会话管理器的程序类的引用 &ndash;&gt;-->
+        <!--<property name="sessionManager" ref="sessionManager"/>-->
+    <!--</bean>-->
+
+    <!--&lt;!&ndash;&lt;!&ndash; remenberMe配置 &ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;<bean id="rememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">&ndash;&gt;-->
+        <!--&lt;!&ndash;<constructor-arg value="rememberMe" />&ndash;&gt;-->
+        <!--&lt;!&ndash;<property name="httpOnly" value="true" />&ndash;&gt;-->
+        <!--&lt;!&ndash;&lt;!&ndash; 默认记住7天（单位：秒） &ndash;&gt;&ndash;&gt;-->
+        <!--&lt;!&ndash;<property name="maxAge" value="604800" />&ndash;&gt;-->
+    <!--&lt;!&ndash;</bean>&ndash;&gt;-->
+    <!--&lt;!&ndash;&lt;!&ndash; rememberMe管理器 &ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;<bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">&ndash;&gt;-->
+        <!--&lt;!&ndash;<property name="cipherKey" value="#{T(org.apache.shiro.codec.Base64).decode('4AvVhmFLUs0KTA3Kprsdag==')}" />&ndash;&gt;-->
+        <!--&lt;!&ndash;<property name="cookie" ref="rememberMeCookie" />&ndash;&gt;-->
+    <!--&lt;!&ndash;</bean>&ndash;&gt;-->
+
+</beans>

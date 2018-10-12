@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true">
+
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<Encoding>UTF-8</Encoding>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%-20(%d{HH:mm:ss.SSS} [%thread][line:%L])  %-5level %logger{80} %M - %msg%n</Pattern>
+		</layout>
+	</appender>
+
+	<logger name="ch.qos.logback">
+		<level value="warn"/>
+	</logger>
+	<logger name="org.springframework">
+		<level value="warn" />
+	</logger>
+
+	<logger name="org.hibernate">
+		<level value="error" />
+	</logger>
+    <logger name="org.apache.http.impl">
+        <level value="error" />
+    </logger>
+
+	<root level="debug">
+		<appender-ref ref="stdout" />
+	</root>
+</configuration>
