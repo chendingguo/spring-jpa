@@ -10,10 +10,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface MediaRepository  extends JpaRepository<Media, Long>, JpaSpecificationExecutor<Media> {
 
-    @Query(value = "SELECT * FROM media WHERE status = ?1 ORDER BY  id DESC \n#pageable\n",
-        countQuery = "SELECT count(*) FROM media WHERE status = ?1",
-        nativeQuery = true)
-    Page<Media> findMediaByStatus(int status, Pageable pageable);
 
 
 }

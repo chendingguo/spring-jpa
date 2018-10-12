@@ -38,11 +38,7 @@
         <property name="minEvictableIdleTimeMillis" value="300000"/>
     </bean>
 
-    <bean id="dataSource" parent="parentDataSource">
-        <property name="url" value="${default.dataSource.url}"/>
-        <property name="username" value="${default.dataSource.username}"/>
-        <property name="password" value="${default.dataSource.password}"/>
-    </bean>
+
 
     <bean id="adiDataSource" parent="parentDataSource">
         <property name="url" value="${adi.dataSource.url}"/>

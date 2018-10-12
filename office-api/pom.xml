@@ -31,13 +31,11 @@
                 <!--数据源配置-->
                 <datasource.driver>com.mysql.jdbc.Driver</datasource.driver>
 
-
-
                 <!--adi-->
-                <adi.datasource.url>jdbc:mysql://10.3.20.51:3306/adi_dev_v2?characterEncoding=utf-8
+                <adi.datasource.url>jdbc:mysql://192.168.1.111:3306/adinsights_v3?characterEncoding=utf-8
                 </adi.datasource.url>
-                <adi.datasource.username></adi.datasource.username>
-                <adi.datasource.password></adi.datasource.password>
+                <adi.datasource.username>root</adi.datasource.username>
+                <adi.datasource.password>123456</adi.datasource.password>
 
             </properties>
         </profile>
@@ -535,6 +533,8 @@
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
+
+
 
 
     </dependencies>

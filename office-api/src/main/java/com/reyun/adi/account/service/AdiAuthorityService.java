@@ -7,6 +7,7 @@ import com.reyun.adi.account.model.ProductType;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface AdiAuthorityService {
@@ -39,6 +40,13 @@ public interface AdiAuthorityService {
      * @return
      */
     List<Continent> listContinent();
+
+
+    /**
+     * 获取所有国家
+     * @return
+     */
+    List<Map<String,Object>> listAllCountries();
 
     /**
      * 创建用户权限

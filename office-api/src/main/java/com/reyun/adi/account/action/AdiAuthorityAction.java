@@ -1,42 +1,26 @@
 package com.reyun.adi.account.action;
 
-import com.reyun.adi.account.model.UserTrailCategory;
 import com.reyun.adi.account.service.AdiAuthorityService;
-import com.reyun.adi.account.service.MediaService;
 import com.reyun.framework.model.ResultModel;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
-import com.wordnik.swagger.annotations.ApiParam;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/adi/auth")
 @Api(value = "/api/adi/auth", description = "媒体管理", position = 12)
 public class AdiAuthorityAction {
-    @Autowired
-    MediaService mediaService;
+
 
     @Autowired
     AdiAuthorityService adiAuthorityService;
 
-    @ApiOperation(value = "媒体管理", notes = "", httpMethod = "GET", response = ResultModel.class)
-    @RequestMapping(value = "/listMedia", method = RequestMethod.GET)
-    public ResultModel listMedia(@RequestParam(required = false, defaultValue = "1") int pageIndex,
-                                 @RequestParam(required = false, defaultValue = "10") int pageSize) {
 
-        return ResultModel.OK(mediaService.listMedia(pageIndex, pageSize));
-    }
-
-    @ApiOperation(value = "媒体管理", notes = "", httpMethod = "GET", response = ResultModel.class)
-    @RequestMapping(value = "/getMediaList", method = RequestMethod.GET)
-    public ResultModel findMediaByStatus(@RequestParam(required = false, defaultValue = "1") int pageIndex,
-                                         @RequestParam(required = false, defaultValue = "10") int pageSize,
-                                         @RequestParam(required = false, defaultValue = "1") int status) {
-
-        return ResultModel.OK(mediaService.findMediaByStatus(pageIndex, pageSize, status));
-    }
 
     @ApiOperation(value = "获取产品分类", notes = "", httpMethod = "GET", response = ResultModel.class)
     @RequestMapping(value = "/listProductCategory", method = RequestMethod.GET)
@@ -65,6 +49,14 @@ public class AdiAuthorityAction {
     public ResultModel listContinent() {
 
         return ResultModel.OK(adiAuthorityService.listContinent());
+    }
+
+    @ApiOperation(value = "获取州和国家", notes = "", httpMethod = "GET", response = ResultModel.class)
+    @RequestMapping(value = "/listAllCountries", method = RequestMethod.GET)
+    public ResultModel listAllCountries() {
+
+
+        return ResultModel.OK(adiAuthorityService.listAllCountries());
     }
 
     @RequestMapping(value = "/modifyUserTrialCategory", method = RequestMethod.POST)

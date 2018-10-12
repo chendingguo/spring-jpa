@@ -4,6 +4,7 @@ import com.reyun.adi.account.model.*;
 import com.reyun.adi.account.repository.*;
 import com.reyun.adi.account.service.AdiAuthorityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.swing.tree.ExpandVetoException;
 import java.util.*;
 
 @Service
@@ -119,6 +121,26 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
     @Override
     public List<Continent> listContinent() {
         return continentRepository.findAll();
+    }
+
+    @Override
+    public List<Map<String,Object>> listAllCountries() {
+        List<Map<String,Object>> list=new ArrayList<>();
+       List<Continent> continents= continentRepository.findAll();
+       for(Continent continent:continents){
+           Map<String,Object> map=new HashMap<>();
+           map.put("id",continent.getId());
+           map.put("name",continent.getName());
+           Country countryParam=new Country();
+           countryParam.setContinentId(continent.getId());
+           Example<Country> example=Example.of(countryParam);
+           List<Country> countries=countryRepository.findAll(example);
+           map.put("countryList",countries);
+           list.add(map);
+
+       }
+       return list;
+
     }
 
     @Override
