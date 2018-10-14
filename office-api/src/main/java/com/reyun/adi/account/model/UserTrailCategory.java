@@ -27,11 +27,7 @@ public class UserTrailCategory {
 
     private Integer zoneId;
 
-    @Column(name = "created_time_date_time")
-    private Date createdTimeDateTime;
 
-    @Column(name = "modify_time_date_time")
-    private Date modifyTimeDateTime;
 
     public Integer getId() {
         return id;
@@ -97,19 +93,4 @@ public class UserTrailCategory {
         this.zoneId = zoneId;
     }
 
-    public Date getCreatedTimeDateTime() {
-        return createdTimeDateTime;
-    }
-
-    public void setCreatedTimeDateTime(Date createdTimeDateTime) {
-        this.createdTimeDateTime = createdTimeDateTime;
-    }
-
-    public Date getModifyTimeDateTime() {
-        return modifyTimeDateTime;
-    }
-
-    public void setModifyTimeDateTime(Date modifyTimeDateTime) {
-        this.modifyTimeDateTime = modifyTimeDateTime;
-    }
 }

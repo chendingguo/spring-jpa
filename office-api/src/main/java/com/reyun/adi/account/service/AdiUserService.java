@@ -9,7 +9,18 @@ import org.springframework.stereotype.Repository;
 public interface AdiUserService {
      Page<User> listUsers(int pageIndex, int pageSize);
 
+    /**
+     * 创建用户
+     * @param user
+     * @return
+     */
     Long createUser(User user);
+
+    /**
+     * 更新
+     * @param user
+     * @return
+     */
     Long updateUser(User user);
 
 

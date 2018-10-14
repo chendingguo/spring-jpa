@@ -124,42 +124,42 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
     }
 
     @Override
-    public List<Map<String,Object>> listAllCountries() {
-        List<Map<String,Object>> list=new ArrayList<>();
-       List<Continent> continents= continentRepository.findAll();
-       for(Continent continent:continents){
-           Map<String,Object> map=new HashMap<>();
-           map.put("id",continent.getId());
-           map.put("name",continent.getName());
-           Country countryParam=new Country();
-           countryParam.setContinentId(continent.getId());
-           Example<Country> example=Example.of(countryParam);
-           List<Country> countries=countryRepository.findAll(example);
-           map.put("countryList",countries);
-           list.add(map);
+    public List<Map<String, Object>> listAllCountries() {
+        List<Map<String, Object>> list = new ArrayList<>();
+        List<Continent> continents = continentRepository.findAll();
+        for (Continent continent : continents) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", continent.getId());
+            map.put("name", continent.getName());
+            Country countryParam = new Country();
+            countryParam.setContinentId(continent.getId());
+            Example<Country> example = Example.of(countryParam);
+            List<Country> countries = countryRepository.findAll(example);
+            map.put("countryList", countries);
+            list.add(map);
 
-       }
-       return list;
+        }
+        return list;
 
     }
 
     @Override
     @Transactional
-    public int createUserTrialCategory(long userId, int zoonId, String catIds)  {
+    public int createUserTrialCategory(long userId, int zoonId, String catIds) {
         if (catIds.isEmpty()) {
             return 0;
         }
         String[] catIdArray = catIds.split(",");
         //获取 typeid
-        List<Long> catIdList=new ArrayList<>();
-        for(String catId:catIdArray){
+        List<Long> catIdList = new ArrayList<>();
+        for (String catId : catIdArray) {
             catIdList.add(Long.parseLong(catId));
         }
 
-        Map<Long,Integer> typeMap=new HashMap<>();
-        List<ProductCategory> productCategories=productCategoryRepository.findAll(catIdList);
-        for(ProductCategory productCategory:productCategories){
-            typeMap.put(productCategory.getId(),productCategory.getTypeId());
+        Map<Long, Integer> typeMap = new HashMap<>();
+        List<ProductCategory> productCategories = productCategoryRepository.findAll(catIdList);
+        for (ProductCategory productCategory : productCategories) {
+            typeMap.put(productCategory.getId(), productCategory.getTypeId());
         }
 
 
@@ -182,29 +182,47 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
     }
 
     @Override
+    public int deleteUserTrilCategory(long userId) {
+        return userTrailCatRepository.deleteByUserId(userId);
+    }
+
+    @Override
+    @Transactional
+    public int modifyUserTrialCategory(long userId, int zoonId, String catIds) {
+        deleteUserTrilCategory(userId);
+        int insetResult = createUserTrialCategory(userId, zoonId, catIds);
+        return insetResult;
+    }
+
+    @Override
+    public int deleteUserTrilMedia(long userId) {
+        return userTrialMediaRepository.deleteByUserId(userId);
+    }
+
+    @Override
     public int createUserTrialMedia(long userId, int zoonId, String mediaIds) {
         if (mediaIds.isEmpty()) {
             return 0;
         }
         String[] idArray = mediaIds.split(",");
         //获取 typeid
-        List<Long> idList=new ArrayList<>();
-        for(String id:idArray){
+        List<Long> idList = new ArrayList<>();
+        for (String id : idArray) {
             idList.add(Long.parseLong(id));
         }
 
-        Map<Long,Media> mediaMap=new HashMap<>();
-        List<Media> medias=mediaRepository.findAll(idList);
-        for(Media media:medias){
-            mediaMap.put(media.getId(),media);
+        Map<Long, Media> mediaMap = new HashMap<>();
+        List<Media> medias = mediaRepository.findAll(idList);
+        for (Media media : medias) {
+            mediaMap.put(media.getId(), media);
         }
 
 
-        List<UserTrialMedia> userTrialMediaList=new ArrayList<>();
-        for(String id:idArray){
-            Long mediaId=Long.parseLong(id);
-            String mediaName=mediaMap.get(mediaId).getName();
-            UserTrialMedia userTrialMedia=new UserTrialMedia();
+        List<UserTrialMedia> userTrialMediaList = new ArrayList<>();
+        for (String id : idArray) {
+            Long mediaId = Long.parseLong(id);
+            String mediaName = mediaMap.get(mediaId).getName();
+            UserTrialMedia userTrialMedia = new UserTrialMedia();
             userTrialMedia.setMediaId(mediaId);
             userTrialMedia.setMediaName(mediaName);
             userTrialMedia.setUserId(userId);
@@ -216,6 +234,13 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
 
         }
         return userTrialMediaRepository.save(userTrialMediaList).size();
+
+    }
+
+    @Override
+    public int modifyUserTrialMddia(long userId, int zoonId, String mediaIds) {
+        deleteUserTrilMedia(userId);
+        return createUserTrialMedia(userId, zoonId, mediaIds);
 
     }
 }

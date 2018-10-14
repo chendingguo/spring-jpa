@@ -59,6 +59,32 @@ public interface AdiAuthorityService {
      int createUserTrialCategory(long userId,int zoonId,String catIds);
 
     /**
+     * 删除用户产品权限
+     * @param userId
+     * @return
+     */
+
+     int deleteUserTrilCategory(long userId);
+
+    /**
+     * 修改用户产品分类
+     * @param userId
+     * @param zoonId
+     * @param catIds
+     * @return
+     */
+
+     int modifyUserTrialCategory(long userId,int zoonId,String catIds);
+
+
+    /**
+     * 删除用户媒体权限
+     * @param userId
+     * @return
+     */
+
+    int deleteUserTrilMedia(long userId);
+    /**
      * 创建用户媒体权限
      * @param userId
      * @param zoonId
@@ -66,6 +92,19 @@ public interface AdiAuthorityService {
      * @return
      */
     int createUserTrialMedia(long userId,int zoonId,String mediaIds);
+
+
+    /**
+     * 修改用户媒体分类
+     * @param userId
+     * @param zoonId
+     * @param catIds
+     * @return
+     */
+
+    int modifyUserTrialMddia(long userId,int zoonId,String mediaIds);
+
+
 
 
 }

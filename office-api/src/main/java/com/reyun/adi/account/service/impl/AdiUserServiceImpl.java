@@ -3,6 +3,7 @@ package com.reyun.adi.account.service.impl;
 import com.reyun.adi.account.model.User;
 import com.reyun.adi.account.repository.AdiUserRepository;
 import com.reyun.adi.account.service.AdiUserService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +17,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -34,7 +36,53 @@ public class AdiUserServiceImpl implements AdiUserService {
     @Override
     public Long updateUser(User user) {
 
-        return null;
+        long id = user.getId();
+        User userBean = userRepository.findOne(id);
+
+        if (StringUtils.isNotEmpty(user.getCompany())) {
+            userBean.setCompany(user.getCompany());
+
+        }
+        if (user.getCreateAccount() != null && user.getCreateAccount() > 0) {
+
+            userBean.setCreateAccount(user.getCreateAccount());
+        }
+
+        if (user.getDelFlag() != null) {
+            userBean.setDelFlag(user.getDelFlag());
+        }
+        if (user.getEmail() != null) {
+            userBean.setEmail(user.getEmail());
+        }
+        if (StringUtils.isNotEmpty(user.getPhone())) {
+            userBean.setPhone(user.getPhone());
+        }
+        if (user.getExpriedTime() != null) {
+            userBean.setExpriedTime(user.getExpriedTime());
+        }
+        if (user.getModifyAccount() != null) {
+            userBean.setModifyAccount(user.getModifyAccount());
+        }
+
+        if (StringUtils.isNotEmpty(user.getPassword())) {
+            userBean.setPassword(user.getPassword());
+        }
+        if(user.getWhetherCompany()!=null){
+            userBean.setWhetherCompany(user.getWhetherCompany());
+        }
+
+        if(user.getOnTrial()!=null){
+            userBean.setOnTrial(user.getOnTrial());
+        }
+        if(user.getStatus()!=null){
+            userBean.setStatus(user.getStatus());
+        }
+        if (user.getZoneId() != null) {
+            userBean.setZoneId(user.getZoneId());
+        }
+      userBean.setModifyTime(new Date());
+
+        return userRepository.save(userBean).getId();
     }
 
 
@@ -45,7 +93,7 @@ public class AdiUserServiceImpl implements AdiUserService {
 
 
         Specification<User> specification = getSpecification("cdg", 1);
-       return userRepository.findAll(specification, pageable);
+        return userRepository.findAll(specification, pageable);
     }
 
     public Specification<User> getSpecification(String keyword, Integer status) {
