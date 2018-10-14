@@ -98,11 +98,11 @@ public interface AdiAuthorityService {
      * 修改用户媒体分类
      * @param userId
      * @param zoonId
-     * @param catIds
+     * @param mediaIds
      * @return
      */
 
-    int modifyUserTrialMddia(long userId,int zoonId,String mediaIds);
+    int modifyUserTrialMedia(long userId,int zoonId,String mediaIds);
 
 
 

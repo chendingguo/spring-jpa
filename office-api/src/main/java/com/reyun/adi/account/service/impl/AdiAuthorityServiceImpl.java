@@ -196,6 +196,7 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
 
     @Override
     public int deleteUserTrilMedia(long userId) {
+
         return userTrialMediaRepository.deleteByUserId(userId);
     }
 
@@ -238,7 +239,7 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
     }
 
     @Override
-    public int modifyUserTrialMddia(long userId, int zoonId, String mediaIds) {
+    public int modifyUserTrialMedia(long userId, int zoonId, String mediaIds) {
         deleteUserTrilMedia(userId);
         return createUserTrialMedia(userId, zoonId, mediaIds);
 

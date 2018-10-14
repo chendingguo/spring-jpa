@@ -76,7 +76,7 @@ public class AdiAuthorityAction {
         @RequestParam(defaultValue = "") long userId,
         @RequestParam(defaultValue = "") int zoonId,
         @RequestParam(defaultValue = "") String mediaIds) {
-        return ResultModel.OK(adiAuthorityService.createUserTrialMedia(userId, zoonId, mediaIds));
+        return ResultModel.OK(adiAuthorityService.modifyUserTrialCategory(userId, zoonId, mediaIds));
     }
 
     
