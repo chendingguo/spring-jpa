@@ -97,28 +97,45 @@ public class AdiUserServiceImpl implements AdiUserService {
 
 
     @Override
-    public Page<User> listUsers(int pageIndex, int pageSize, String keyword) {
+    public Page<User> listUsers(int pageIndex, int pageSize, String keyword, int status, int type, int packageValue) {
         Sort sort = new Sort(Sort.Direction.ASC, "id");
         Pageable pageable = new PageRequest(pageIndex - 1, pageSize, sort);
 
 
-        Specification<User> specification = getSpecification(keyword, 1);
-        Page<User> userResult=userRepository.findAll(specification, pageable);
-        List<User> users=userResult.getContent();
-       for(User user:users){
-           user.setPassword("");
-       }
-       return userResult;
+        Specification<User> specification = getSpecification(keyword, status, type, packageValue);
+        Page<User> userResult = userRepository.findAll(specification, pageable);
+        List<User> users = userResult.getContent();
+        for (User user : users) {
+            user.setPassword("");
+        }
+        return userResult;
 
     }
 
-    public Specification<User> getSpecification(String keyword, Integer status) {
+    public Specification<User> getSpecification(String keyword, Integer status, int type, int packageValue) {
         Specification<User> specification = (Root<User> root, CriteriaQuery<?> query, CriteriaBuilder cb) -> {
 
             Predicate predicate = cb.conjunction();
             if (status > -1) {
                 predicate.getExpressions().add(
                         cb.equal(root.get("status"), status));
+            }
+
+            if (type > -1) {
+                //普通用户
+                if (type == 0) {
+                    predicate.getExpressions().add(
+                            cb.equal(root.get("whetherCompany"), false));
+                } else {
+                    //企业用户
+                    predicate.getExpressions().add(
+                            cb.equal(root.get("whetherCompany"), true));
+                }
+
+            }
+            if (packageValue > -1) {
+                predicate.getExpressions().add(
+                        cb.equal(root.get("onTrial"), packageValue));
             }
 
             List<Predicate> predicates = new ArrayList<>();

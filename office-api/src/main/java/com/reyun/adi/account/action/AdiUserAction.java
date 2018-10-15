@@ -61,8 +61,10 @@ public class AdiUserAction {
     public ResultModel list(
             @RequestParam(required = false, defaultValue = "1") int pageIndex,
             @RequestParam(required = false, defaultValue = "50") int pageSize,
-            @RequestParam(required = false, defaultValue = "") String keyword) {
-        Page<User> resut = adiUserService.listUsers(pageIndex, pageSize, keyword);
+            @RequestParam(required = false, defaultValue = "") String keyword,
+            @RequestParam(required = false, defaultValue = "-1") int  status,
+            @RequestParam(required = false, defaultValue = "-1") int  type,@RequestParam(required = false, defaultValue = "-1") int packageValue){
+        Page<User> resut = adiUserService.listUsers(pageIndex, pageSize, keyword,status,type,packageValue);
         String[] columnTitle = {
                 "账号邮箱",
                 "公司名称",

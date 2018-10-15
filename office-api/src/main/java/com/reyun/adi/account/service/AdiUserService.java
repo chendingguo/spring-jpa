@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AdiUserService {
-     Page<User> listUsers(int pageIndex, int pageSize,String keyword);
+     Page<User> listUsers(int pageIndex, int pageSize,String keyword,int status,int type,int packageValue);
 
     /**
      * 创建用户

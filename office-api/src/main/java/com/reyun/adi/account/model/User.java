@@ -51,7 +51,7 @@ public class User {
 
     private Boolean onMedia;
 
-    private Boolean onTrial;
+    private Integer onTrial;
 
     private Date expriedTime;
 
@@ -225,11 +225,11 @@ public class User {
         this.onMedia = onMedia;
     }
 
-    public Boolean getOnTrial() {
+    public Integer getOnTrial() {
         return onTrial;
     }
 
-    public void setOnTrial(Boolean onTrial) {
+    public void setOnTrial(Integer onTrial) {
         this.onTrial = onTrial;
     }
 
