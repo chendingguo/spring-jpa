@@ -14,7 +14,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.swing.tree.ExpandVetoException;
 import java.util.*;
 
 @Service
@@ -145,7 +144,7 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
 
     @Override
     @Transactional
-    public int createUserTrialCategory(long userId, int zoonId, String catIds) {
+    public int createUserTrialCategory(long userId, int zoneId, String catIds) {
         if (catIds.isEmpty()) {
             return 0;
         }
@@ -163,16 +162,16 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
         }
 
 
-        List<UserTrailCategory> userTrailCategories = new ArrayList<>();
+        List<UserTrialCategory> userTrailCategories = new ArrayList<>();
         for (String catId : catIdArray) {
-            UserTrailCategory userTrailCategory = new UserTrailCategory();
+            UserTrialCategory userTrailCategory = new UserTrialCategory();
             userTrailCategory.setUserId(userId);
             userTrailCategory.setCatId(Long.parseLong(catId));
             userTrailCategory.setStatus(true);
             userTrailCategory.setTypeId(typeMap.get(Long.parseLong(catId)));
             userTrailCategory.setCreatedTime(new Date());
             userTrailCategory.setModifyTime(new Date());
-            userTrailCategory.setZoneId(zoonId);
+            userTrailCategory.setZoneId(zoneId);
             userTrailCategories.add(userTrailCategory);
         }
         List list = userTrailCatRepository.save(userTrailCategories);
@@ -188,10 +187,19 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
 
     @Override
     @Transactional
-    public int modifyUserTrialCategory(long userId, int zoonId, String catIds) {
+    public int modifyUserTrialCategory(long userId, int zoneId, String catIds) {
         deleteUserTrilCategory(userId);
-        int insetResult = createUserTrialCategory(userId, zoonId, catIds);
+        int insetResult = createUserTrialCategory(userId, zoneId, catIds);
         return insetResult;
+    }
+
+    @Override
+    public List<UserTrialCategory> listUserCategory(long userId, int zoneId) {
+        UserTrialCategory param=new UserTrialCategory();
+        param.setUserId(userId);
+        param.setZoneId(zoneId);
+        Example<UserTrialCategory> paramExample=Example.of(param);
+        return userTrailCatRepository.findAll(paramExample);
     }
 
     @Override
@@ -201,7 +209,7 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
     }
 
     @Override
-    public int createUserTrialMedia(long userId, int zoonId, String mediaIds) {
+    public int createUserTrialMedia(long userId, int zoneId, String mediaIds) {
         if (mediaIds.isEmpty()) {
             return 0;
         }
@@ -228,7 +236,7 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
             userTrialMedia.setMediaName(mediaName);
             userTrialMedia.setUserId(userId);
             userTrialMedia.setStatus(true);
-            userTrialMedia.setZoonId(zoonId);
+            userTrialMedia.setZoneId(zoneId);
             userTrialMedia.setCreatedTime(new Date());
             userTrialMedia.setModifyTime(new Date());
             userTrialMediaList.add(userTrialMedia);
@@ -239,9 +247,18 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
     }
 
     @Override
-    public int modifyUserTrialMedia(long userId, int zoonId, String mediaIds) {
+    public int modifyUserTrialMedia(long userId, int zoneId, String mediaIds) {
         deleteUserTrilMedia(userId);
-        return createUserTrialMedia(userId, zoonId, mediaIds);
+        return createUserTrialMedia(userId, zoneId, mediaIds);
 
+    }
+
+    @Override
+    public List<UserTrialMedia> listUserMedia(long userId,int zoneId) {
+        UserTrialMedia param=new UserTrialMedia();
+        param.setUserId(userId);
+        param.setZoneId(zoneId);
+        Example<UserTrialMedia> paramExample=Example.of(param);
+        return userTrialMediaRepository.findAll(paramExample);
     }
 }

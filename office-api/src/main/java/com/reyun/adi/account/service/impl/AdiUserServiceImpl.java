@@ -103,7 +103,13 @@ public class AdiUserServiceImpl implements AdiUserService {
 
 
         Specification<User> specification = getSpecification(keyword, 1);
-        return userRepository.findAll(specification, pageable);
+        Page<User> userResult=userRepository.findAll(specification, pageable);
+        List<User> users=userResult.getContent();
+       for(User user:users){
+           user.setPassword("");
+       }
+       return userResult;
+
     }
 
     public Specification<User> getSpecification(String keyword, Integer status) {

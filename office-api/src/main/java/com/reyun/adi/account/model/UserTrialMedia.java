@@ -24,7 +24,7 @@ public class UserTrialMedia {
 
     private Date modifyTime;
 
-    private Integer zoonId;
+    private Integer zoneId;
 
     public Long getId() {
         return id;
@@ -82,11 +82,11 @@ public class UserTrialMedia {
         this.modifyTime = modifyTime;
     }
 
-    public Integer getZoonId() {
-        return zoonId;
+    public Integer getZoneId() {
+        return zoneId;
     }
 
-    public void setZoonId(Integer zoonId) {
-        this.zoonId = zoonId;
+    public void setZoneId(Integer zoneId) {
+        this.zoneId = zoneId;
     }
 }

@@ -4,7 +4,7 @@ import java.util.Date;
 
 @Entity
 @Table(name="user_trial_category")
-public class UserTrailCategory {
+public class UserTrialCategory {
     @Id
     @GeneratedValue
     private Integer id;

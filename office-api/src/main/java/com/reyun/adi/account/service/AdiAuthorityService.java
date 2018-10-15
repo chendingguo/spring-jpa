@@ -1,9 +1,6 @@
 package com.reyun.adi.account.service;
 
-import com.reyun.adi.account.model.Continent;
-import com.reyun.adi.account.model.Country;
-import com.reyun.adi.account.model.Media;
-import com.reyun.adi.account.model.ProductType;
+import com.reyun.adi.account.model.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -51,12 +48,12 @@ public interface AdiAuthorityService {
     /**
      * 创建用户权限
      * @param userId
-     * @param zoonId
+     * @param zoneId
      * @param catIds
      * @return
      */
 
-     int createUserTrialCategory(long userId,int zoonId,String catIds);
+     int createUserTrialCategory(long userId,int zoneId,String catIds);
 
     /**
      * 删除用户产品权限
@@ -69,12 +66,20 @@ public interface AdiAuthorityService {
     /**
      * 修改用户产品分类
      * @param userId
-     * @param zoonId
+     * @param zoneId
      * @param catIds
      * @return
      */
 
-     int modifyUserTrialCategory(long userId,int zoonId,String catIds);
+     int modifyUserTrialCategory(long userId,int zoneId,String catIds);
+
+
+    /**
+     * 获取 用户可见产品分类列表
+     * @param userId
+     * @return
+     */
+    List<UserTrialCategory> listUserCategory(long userId, int zoneId);
 
 
     /**
@@ -87,22 +92,29 @@ public interface AdiAuthorityService {
     /**
      * 创建用户媒体权限
      * @param userId
-     * @param zoonId
+     * @param  zoneId
      * @param mediaIds
      * @return
      */
-    int createUserTrialMedia(long userId,int zoonId,String mediaIds);
+    int createUserTrialMedia(long userId,int zoneId,String mediaIds);
 
 
     /**
      * 修改用户媒体分类
      * @param userId
-     * @param zoonId
+     * @param zoneId
      * @param mediaIds
      * @return
      */
 
-    int modifyUserTrialMedia(long userId,int zoonId,String mediaIds);
+    int modifyUserTrialMedia(long userId,int zoneId,String mediaIds);
+
+    /**
+     * 获取 用户可见媒体列表
+     * @param userId
+     * @returnMedia
+     */
+    List<UserTrialMedia> listUserMedia(long userId,int zoneId);
 
 
 

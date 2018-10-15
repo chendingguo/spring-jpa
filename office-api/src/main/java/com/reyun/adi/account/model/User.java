@@ -1,5 +1,7 @@
 package com.reyun.adi.account.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -29,6 +31,7 @@ public class User {
     private Date modifyTime;
 
     private String name;
+
 
     private String password;
 
@@ -61,6 +64,7 @@ public class User {
     private Boolean useStatus;
 
     private Integer sitNum;
+
 
     private String passwd;
 
@@ -147,6 +151,7 @@ public class User {
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
     }
+
 
     public String getPassword() {
         return password;

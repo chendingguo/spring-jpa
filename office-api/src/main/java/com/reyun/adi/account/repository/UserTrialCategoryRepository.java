@@ -1,7 +1,7 @@
 package com.reyun.adi.account.repository;
 
 
-import com.reyun.adi.account.model.UserTrailCategory;
+import com.reyun.adi.account.model.UserTrialCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -9,9 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
-public interface UserTrialCategoryRepository extends JpaRepository<UserTrailCategory, Long>, JpaSpecificationExecutor<UserTrailCategory> {
+public interface UserTrialCategoryRepository extends JpaRepository<UserTrialCategory, Long>, JpaSpecificationExecutor<UserTrialCategory> {
 
     @Modifying
     @Transactional

@@ -79,6 +79,24 @@ public class AdiAuthorityAction {
         return ResultModel.OK(adiAuthorityService.modifyUserTrialMedia(userId, zoonId, mediaIds));
     }
 
+    @RequestMapping(value = "/listUserCategory")
+    @ApiOperation(value = "获取用户可见产品分类", notes = "", httpMethod = "POST", response = ResultModel.class)
+    @RequiresPermissions("userpage")
+    public ResultModel listUserCategory(
+            @RequestParam(defaultValue = "") long userId,
+            @RequestParam(defaultValue = "") int zoneId) {
+        return ResultModel.OK(adiAuthorityService.listUserCategory(userId, zoneId));
+    }
+
+    @RequestMapping(value = "/listUserMedia")
+    @ApiOperation(value = "获取用户可见媒体", notes = "", httpMethod = "POST", response = ResultModel.class)
+    @RequiresPermissions("userpage")
+    public ResultModel listUserMedia(
+            @RequestParam(defaultValue = "") long userId,
+            @RequestParam(defaultValue = "") int zoneId) {
+        return ResultModel.OK(adiAuthorityService.listUserMedia(userId, zoneId));
+    }
+
     
 
 
