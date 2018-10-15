@@ -1,10 +1,13 @@
 package com.reyun.adi.account.dic;
 
 
+import org.omg.CORBA.INTERNAL;
+
 public enum PackageEnum {
 
-    PROBATION(1,"试用套餐"),
-    FORMAL(2,"正式套餐");
+    PROBATION(1,"试用"),
+    FORMAL(2,"付费"),
+    INTERNAL(3,"内部");
 
     private Integer key;
     private String value;

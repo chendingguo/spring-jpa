@@ -1,5 +1,9 @@
 package com.reyun.adi.account.action;
 
+import com.reyun.adi.account.dic.AdiErrorCodeEnum;
+import com.reyun.adi.account.dic.PackageEnum;
+import com.reyun.adi.account.dic.StatusEnum;
+import com.reyun.adi.account.dic.TypeEnum;
 import com.reyun.adi.account.service.AdiAuthorityService;
 import com.reyun.framework.model.ResultModel;
 import com.wordnik.swagger.annotations.Api;
@@ -11,6 +15,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping(value = "/adi/auth")
 @Api(value = "/api/adi/auth", description = "媒体管理", position = 12)
@@ -19,7 +28,6 @@ public class AdiAuthorityAction {
 
     @Autowired
     AdiAuthorityService adiAuthorityService;
-
 
 
     @ApiOperation(value = "获取产品分类", notes = "", httpMethod = "GET", response = ResultModel.class)
@@ -63,9 +71,9 @@ public class AdiAuthorityAction {
     @ApiOperation(value = "创建用户分类权限", notes = "", httpMethod = "POST", response = ResultModel.class)
     @RequiresPermissions("userpage")
     public ResultModel modifyUserTrialCategory(
-        @RequestParam(defaultValue = "") long userId,
-        @RequestParam(defaultValue = "") int zoonId,
-        @RequestParam(defaultValue = "") String catIds) {
+            @RequestParam(defaultValue = "") long userId,
+            @RequestParam(defaultValue = "") int zoonId,
+            @RequestParam(defaultValue = "") String catIds) {
         return ResultModel.OK(adiAuthorityService.modifyUserTrialCategory(userId, zoonId, catIds));
     }
 
@@ -73,9 +81,9 @@ public class AdiAuthorityAction {
     @ApiOperation(value = "创建用户分类权限", notes = "", httpMethod = "POST", response = ResultModel.class)
     @RequiresPermissions("userpage")
     public ResultModel modifyUserTrialMedia(
-        @RequestParam(defaultValue = "") long userId,
-        @RequestParam(defaultValue = "") int zoonId,
-        @RequestParam(defaultValue = "") String mediaIds) {
+            @RequestParam(defaultValue = "") long userId,
+            @RequestParam(defaultValue = "") int zoonId,
+            @RequestParam(defaultValue = "") String mediaIds) {
         return ResultModel.OK(adiAuthorityService.modifyUserTrialMedia(userId, zoonId, mediaIds));
     }
 
@@ -97,7 +105,7 @@ public class AdiAuthorityAction {
         return ResultModel.OK(adiAuthorityService.listUserMedia(userId, zoneId));
     }
 
-    
+
 
 
 }
