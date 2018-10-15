@@ -1,5 +1,6 @@
 package com.reyun.adi.account.service.impl;
 
+import com.reyun.adi.account.dic.AdiErrorCodeEnum;
 import com.reyun.adi.account.model.User;
 import com.reyun.adi.account.repository.AdiUserRepository;
 import com.reyun.adi.account.service.AdiUserService;
@@ -16,6 +17,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,13 +25,21 @@ import java.util.List;
 
 @Service
 public class AdiUserServiceImpl implements AdiUserService {
+
+    @Autowired
+    private HttpServletRequest request;
     @Autowired
     private AdiUserRepository userRepository;
 
 
     @Override
     public Long createUser(User user) {
-
+        long result = checkCreateParamter(user);
+        if (result != 0) {
+            return result;
+        }
+        user.setCreateTime(new Date());
+        user.setRegIpAddr(WebUtils.getIpAddr(request));
         return userRepository.save(user).getId();
     }
 
@@ -67,57 +77,37 @@ public class AdiUserServiceImpl implements AdiUserService {
         if (StringUtils.isNotEmpty(user.getPassword())) {
             userBean.setPassword(user.getPassword());
         }
-        if(user.getWhetherCompany()!=null){
+        if (user.getWhetherCompany() != null) {
             userBean.setWhetherCompany(user.getWhetherCompany());
         }
 
-        if(user.getOnTrial()!=null){
+        if (user.getOnTrial() != null) {
             userBean.setOnTrial(user.getOnTrial());
         }
-        if(user.getStatus()!=null){
+        if (user.getStatus() != null) {
             userBean.setStatus(user.getStatus());
         }
         if (user.getZoneId() != null) {
             userBean.setZoneId(user.getZoneId());
         }
-      userBean.setModifyTime(new Date());
+        userBean.setModifyTime(new Date());
 
         return userRepository.save(userBean).getId();
     }
 
 
     @Override
-    public Page<User> listUsers(int pageIndex, int pageSize) {
+    public Page<User> listUsers(int pageIndex, int pageSize, String keyword) {
         Sort sort = new Sort(Sort.Direction.ASC, "id");
         Pageable pageable = new PageRequest(pageIndex - 1, pageSize, sort);
 
 
-        Specification<User> specification = getSpecification("cdg", 1);
+        Specification<User> specification = getSpecification(keyword, 1);
         return userRepository.findAll(specification, pageable);
     }
 
     public Specification<User> getSpecification(String keyword, Integer status) {
         Specification<User> specification = (Root<User> root, CriteriaQuery<?> query, CriteriaBuilder cb) -> {
-
-//            List<Predicate> predicates = new ArrayList<>();
-//            if (!keyword.isEmpty()) {
-//                Predicate pn = cb.like(root.get("name"), keyword);
-//                Predicate pe = cb.like(root.get("email"), keyword);
-//                predicates.add(pn);
-//                predicates.add(pe);
-//            }
-//
-//            Predicate[] likeArray = new Predicate[predicates.size()];
-//            Predicate or = cb.or(predicates.toArray(likeArray));
-//
-//            List<Predicate> predicateList = new ArrayList<>();
-//            if (status != -1) {
-//                Predicate statusPre = cb.equal(root.get("status"), status);
-//                predicateList.add(statusPre);
-//            }
-//            Predicate[] andArray = new Predicate[predicateList.size()];
-//            Predicate and = cb.and(predicateList.toArray(andArray));
-
 
             Predicate predicate = cb.conjunction();
             if (status > -1) {
@@ -145,5 +135,29 @@ public class AdiUserServiceImpl implements AdiUserService {
 
         return specification;
     }
+
+    /**
+     * 参数 检查
+     *
+     * @param user
+     * @return
+     */
+    public long checkCreateParamter(User user) {
+        String email = user.getEmail();
+
+        Specification<User> specification = (Root<User> root, CriteriaQuery<?> query, CriteriaBuilder cb) -> {
+            Predicate predicate = cb.conjunction();
+            predicate.getExpressions().add(
+                    cb.equal(root.get("email"), email));
+            return predicate;
+        };
+        User userBean = userRepository.findOne(specification);
+        if (userBean != null) {
+            return AdiErrorCodeEnum.EMAIL_REPEATED_ERROR.getCode();
+        }
+
+        return 0;
+    }
+
 
 }
