@@ -72,9 +72,9 @@ public class AdiAuthorityAction {
     @RequiresPermissions("userpage")
     public ResultModel modifyUserTrialCategory(
             @RequestParam(defaultValue = "") long userId,
-            @RequestParam(defaultValue = "") int zoonId,
+            @RequestParam(defaultValue = "") int zoneId,
             @RequestParam(defaultValue = "") String catIds) {
-        return ResultModel.OK(adiAuthorityService.modifyUserTrialCategory(userId, zoonId, catIds));
+        return ResultModel.OK(adiAuthorityService.modifyUserTrialCategory(userId, zoneId, catIds));
     }
 
     @RequestMapping(value = "/modifyUserTrialMedia", method = RequestMethod.POST)
@@ -82,9 +82,9 @@ public class AdiAuthorityAction {
     @RequiresPermissions("userpage")
     public ResultModel modifyUserTrialMedia(
             @RequestParam(defaultValue = "") long userId,
-            @RequestParam(defaultValue = "") int zoonId,
+            @RequestParam(defaultValue = "") int zoneId,
             @RequestParam(defaultValue = "") String mediaIds) {
-        return ResultModel.OK(adiAuthorityService.modifyUserTrialMedia(userId, zoonId, mediaIds));
+        return ResultModel.OK(adiAuthorityService.modifyUserTrialMedia(userId, zoneId, mediaIds));
     }
 
     @RequestMapping(value = "/listUserCategory")
