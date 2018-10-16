@@ -108,26 +108,29 @@ public class AdiUserAction {
     public ResultModel findParam() {
         Map<String, Object> resultMap = new HashMap<>();
 
-        List<Map<Integer, String>> packageList = new ArrayList();
+        List<Map<String, String>> packageList = new ArrayList();
         for (PackageEnum element : PackageEnum.values()) {
-            Map<Integer, String> map = new HashMap<>();
-            map.put(element.getKey(), element.getValue());
+            Map<String, String> map = new HashMap<>();
+            map.put("name", element.getValue());
+            map.put("id", String.valueOf(element.getKey()));
             packageList.add(map);
 
         }
 
-        List<Map<Integer, String>> typeList = new ArrayList();
+        List<Map<String, String>> typeList = new ArrayList();
         for (TypeEnum element : TypeEnum.values()) {
-            Map<Integer, String> map = new HashMap<>();
-            map.put(element.getKey(), element.getValue());
+            Map<String, String> map = new HashMap<>();
+            map.put("name", element.getValue());
+            map.put("id", String.valueOf(element.getKey()));
             typeList.add(map);
 
         }
 
-        List<Map<Integer, String>> statusList = new ArrayList();
+        List<Map<String, String>> statusList = new ArrayList();
         for (StatusEnum element : StatusEnum.values()) {
-            Map<Integer, String> map = new HashMap<>();
-            map.put(element.getKey(), element.getValue());
+            Map<String, String> map = new HashMap<>();
+            map.put("name", element.getValue());
+            map.put("id", String.valueOf(element.getKey()));
             statusList.add(map);
 
         }

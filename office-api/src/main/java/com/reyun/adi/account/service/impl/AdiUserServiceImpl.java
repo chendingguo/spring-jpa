@@ -1,9 +1,13 @@
 package com.reyun.adi.account.service.impl;
 
 import com.reyun.adi.account.dic.AdiErrorCodeEnum;
+import com.reyun.adi.account.dic.PackageEnum;
+import com.reyun.adi.account.dic.StatusEnum;
+import com.reyun.adi.account.dic.TypeEnum;
 import com.reyun.adi.account.model.User;
 import com.reyun.adi.account.repository.AdiUserRepository;
 import com.reyun.adi.account.service.AdiUserService;
+import com.reyun.util.CipherUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -39,7 +43,10 @@ public class AdiUserServiceImpl implements AdiUserService {
             return result;
         }
         user.setCreateTime(new Date());
+
+        user.setPassword(CipherUtil.generatePassword(user.getPassword()));
         user.setRegIpAddr(WebUtils.getIpAddr(request));
+        //user.setRegIpLocation(IPAddrUtil.getLocationFromIpAddr(user.getRegIpAddr()));
         return userRepository.save(user).getId();
     }
 
@@ -107,7 +114,18 @@ public class AdiUserServiceImpl implements AdiUserService {
         List<User> users = userResult.getContent();
         for (User user : users) {
             user.setPassword("");
+            user.setStatusStr(StatusEnum.valueOf(user.getStatus()).getValue());
+            if (user.getWhetherCompany()) {
+                user.setWheterCompanyStr("企业账号");
+            } else {
+                user.setWheterCompanyStr("普通账号");
+            }
+            user.setOnTrialStr(PackageEnum.valueOf(user.getOnTrial()).getValue());
         }
+
+
+
+
         return userResult;
 
     }

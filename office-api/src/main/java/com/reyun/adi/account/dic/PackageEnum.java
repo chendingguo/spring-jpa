@@ -25,4 +25,13 @@ public enum PackageEnum {
         return value;
     }
 
+    public static PackageEnum valueOf(int value) {
+        for (PackageEnum s : values()) {
+            if (s.key == value) {
+                return s;
+            }
+        }
+        throw new RuntimeException("Undefined PackageEnum " + value);
+    }
+
 }

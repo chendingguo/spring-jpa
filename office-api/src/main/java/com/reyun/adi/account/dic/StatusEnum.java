@@ -24,4 +24,13 @@ public enum StatusEnum {
         return value;
     }
 
+    public static StatusEnum valueOf(int value) {
+        for (StatusEnum s : values()) {
+            if (s.key == value) {
+                return s;
+            }
+        }
+        throw new RuntimeException("Undefined AdiErrorCodeEnum " + value);
+    }
+
 }

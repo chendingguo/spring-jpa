@@ -1,10 +1,13 @@
 package com.reyun.adi.account.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.util.Date;
 
 @Entity
@@ -71,6 +74,15 @@ public class User {
     private Integer zoneId;
 
     private Date turnTime;
+
+    @Transient
+    private String statusStr;
+
+    @Transient
+    private String wheterCompanyStr;
+
+    @Transient
+    private String onTrialStr;
 
     public Long getId() {
         return id;
@@ -232,7 +244,7 @@ public class User {
     public void setOnTrial(Integer onTrial) {
         this.onTrial = onTrial;
     }
-
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     public Date getExpriedTime() {
         return expriedTime;
     }
@@ -303,5 +315,29 @@ public class User {
 
     public void setTurnTime(Date turnTime) {
         this.turnTime = turnTime;
+    }
+
+    public String getStatusStr() {
+        return statusStr;
+    }
+
+    public void setStatusStr(String statusStr) {
+        this.statusStr = statusStr;
+    }
+
+    public String getWheterCompanyStr() {
+        return wheterCompanyStr;
+    }
+
+    public void setWheterCompanyStr(String wheterCompanyStr) {
+        this.wheterCompanyStr = wheterCompanyStr;
+    }
+
+    public String getOnTrialStr() {
+        return onTrialStr;
+    }
+
+    public void setOnTrialStr(String onTrialStr) {
+        this.onTrialStr = onTrialStr;
     }
 }
