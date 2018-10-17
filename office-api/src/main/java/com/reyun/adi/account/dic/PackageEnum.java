@@ -5,9 +5,9 @@ import org.omg.CORBA.INTERNAL;
 
 public enum PackageEnum {
 
-    PROBATION(1,"试用"),
-    FORMAL(2,"付费"),
-    INTERNAL(3,"内部");
+    PROBATION(0,"试用"),
+    FORMAL(1,"付费"),
+    INTERNAL(2,"内部");
 
     private Integer key;
     private String value;

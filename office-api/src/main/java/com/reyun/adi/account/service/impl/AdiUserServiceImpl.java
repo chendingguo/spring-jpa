@@ -43,7 +43,8 @@ public class AdiUserServiceImpl implements AdiUserService {
             return result;
         }
         user.setCreateTime(new Date());
-
+        user.setDelFlag(false);
+        user.setUseStatus(true);
         user.setPassword(CipherUtil.generatePassword(user.getPassword()));
         user.setRegIpAddr(WebUtils.getIpAddr(request));
         //user.setRegIpLocation(IPAddrUtil.getLocationFromIpAddr(user.getRegIpAddr()));
