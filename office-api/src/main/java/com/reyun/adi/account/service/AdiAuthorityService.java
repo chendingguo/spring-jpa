@@ -14,7 +14,7 @@ public interface AdiAuthorityService {
      * @return
      */
 
-    List<Media> listMediaByCountry(int countryId);
+    List<Media> listMediaByCountry(String countryIds);
 
     /**
      * 获取产品类别
@@ -107,7 +107,7 @@ public interface AdiAuthorityService {
      * @return
      */
 
-    int modifyUserTrialMedia(long userId,int zoneId,String mediaIds);
+    int modifyUserTrialMedia(long userId,int zoneId,String mediaIds,String countryIds);
 
     /**
      * 获取 用户可见媒体列表
@@ -117,6 +117,15 @@ public interface AdiAuthorityService {
     List<UserTrialMedia> listUserMedia(long userId,int zoneId);
 
 
+    /**
+     * 获取用户国家
+     * @param userId 用户ID
+     * @return
+     */
+
+    List<UserCountry> listUserCountry(long userId);
+
+    int  modifyUserCountry(long userId,String countryIds);
 
 
 }

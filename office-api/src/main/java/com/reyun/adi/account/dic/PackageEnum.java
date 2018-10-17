@@ -1,7 +1,6 @@
 package com.reyun.adi.account.dic;
 
 
-import org.omg.CORBA.INTERNAL;
 
 public enum PackageEnum {
 

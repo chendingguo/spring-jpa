@@ -3,6 +3,7 @@ package com.reyun.adi.account.service.impl;
 import com.reyun.adi.account.model.*;
 import com.reyun.adi.account.repository.*;
 import com.reyun.adi.account.service.AdiAuthorityService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
@@ -10,10 +11,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.*;
 
 @Service
@@ -39,19 +37,31 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
     @Autowired
     UserTrialMediaRepository userTrialMediaRepository;
 
+    @Autowired
+    UserCountryRepository userCountryRepository;
+
 
     @Override
-    public List<Media> listMediaByCountry(int countryId) {
+    public List<Media> listMediaByCountry(String countryIds) {
+
+
         Specification querySpecifi = new Specification<Media>() {
             @Override
             public Predicate toPredicate(Root<Media> root, CriteriaQuery<?> criteriaQuery,
                                          CriteriaBuilder criteriaBuilder) {
 
-                List<Predicate> predicates = new ArrayList<>();
+                if (StringUtils.isNotEmpty(countryIds)) {
+                    Path<Object> path = root.get("countryId");
+                    CriteriaBuilder.In<Object> in = criteriaBuilder.in(path);
+                    String[] countryIdArray = countryIds.split(",");
+                    for (String countryId : countryIdArray) {
+                        in.value(Integer.parseInt(countryId));
 
-                predicates.add(criteriaBuilder.equal(root.get("countryId"), countryId));
+                    }
+                    return criteriaBuilder.and(in);
+                }
+                return criteriaBuilder.conjunction();
 
-                return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
             }
         };
         return mediaRepository.findAll(querySpecifi);
@@ -195,10 +205,10 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
 
     @Override
     public List<UserTrialCategory> listUserCategory(long userId, int zoneId) {
-        UserTrialCategory param=new UserTrialCategory();
+        UserTrialCategory param = new UserTrialCategory();
         param.setUserId(userId);
         param.setZoneId(zoneId);
-        Example<UserTrialCategory> paramExample=Example.of(param);
+        Example<UserTrialCategory> paramExample = Example.of(param);
         return userTrailCatRepository.findAll(paramExample);
     }
 
@@ -247,18 +257,70 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
     }
 
     @Override
-    public int modifyUserTrialMedia(long userId, int zoneId, String mediaIds) {
+    public int modifyUserTrialMedia(long userId, int zoneId, String mediaIds,String countryIds) {
         deleteUserTrilMedia(userId);
+        if(StringUtils.isNotEmpty(countryIds)){
+            modifyUserCountry(userId,countryIds);
+        }
         return createUserTrialMedia(userId, zoneId, mediaIds);
+
 
     }
 
     @Override
-    public List<UserTrialMedia> listUserMedia(long userId,int zoneId) {
-        UserTrialMedia param=new UserTrialMedia();
+    public List<UserTrialMedia> listUserMedia(long userId, int zoneId) {
+        UserTrialMedia param = new UserTrialMedia();
         param.setUserId(userId);
         param.setZoneId(zoneId);
-        Example<UserTrialMedia> paramExample=Example.of(param);
+        Example<UserTrialMedia> paramExample = Example.of(param);
         return userTrialMediaRepository.findAll(paramExample);
+    }
+
+    @Override
+    public List<UserCountry> listUserCountry(long userId) {
+        UserCountry param = new UserCountry();
+        param.setUserId(userId);
+        param.setStatus(true);
+        Example<UserCountry> example = Example.of(param);
+        return userCountryRepository.findAll(example);
+    }
+
+    @Override
+    @Transactional
+    public int modifyUserCountry(long userId, String countryIds) {
+        userCountryRepository.deleteByUserId(userId);
+
+        if (countryIds.isEmpty()) {
+            return 0;
+        }
+        String[] idArray = countryIds.split(",");
+        //获取 typeid
+        List<Long> idList = new ArrayList<>();
+        for (String id : idArray) {
+            idList.add(Long.parseLong(id));
+        }
+
+        Map<Long, Country> countryHashMap = new HashMap<>();
+        List<Country> countries = countryRepository.findAll(idList);
+        for (Country country : countries) {
+            countryHashMap.put(country.getId(), country);
+        }
+
+
+        List<UserCountry> userCountries = new ArrayList<>();
+        for (String id : idArray) {
+            Long  longId =Long.parseLong(id);
+            String countryName = countryHashMap.get(longId).getName();
+            UserCountry userCountry = new UserCountry();
+            userCountry.setUserId(userId);
+            userCountry.setCountryId(Integer.parseInt(id));
+            userCountry.setCountryName(countryName);
+            userCountry.setStatus(true);
+            userCountries.add(userCountry);
+
+        }
+        return userCountryRepository.save(userCountries).size();
+
+
     }
 }
