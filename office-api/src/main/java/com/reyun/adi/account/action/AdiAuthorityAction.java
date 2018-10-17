@@ -15,10 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/adi/auth")
@@ -39,7 +36,7 @@ public class AdiAuthorityAction {
 
     @ApiOperation(value = "媒体管理", notes = "", httpMethod = "GET", response = ResultModel.class)
     @RequestMapping(value = "/listMediaByCountry", method = RequestMethod.GET)
-    public ResultModel listMediaByCountry(@RequestParam(required = false, defaultValue = "1") int countryId) {
+    public ResultModel listMediaByCountry(@RequestParam(required = false, defaultValue = "1") String countryId) {
 
         return ResultModel.OK(adiAuthorityService.listMediaByCountry(countryId));
     }
@@ -81,10 +78,11 @@ public class AdiAuthorityAction {
     @ApiOperation(value = "创建用户分类权限", notes = "", httpMethod = "POST", response = ResultModel.class)
     @RequiresPermissions("userpage")
     public ResultModel modifyUserTrialMedia(
-            @RequestParam(defaultValue = "") long userId,
-            @RequestParam(defaultValue = "") int zoneId,
-            @RequestParam(defaultValue = "") String mediaIds) {
-        return ResultModel.OK(adiAuthorityService.modifyUserTrialMedia(userId, zoneId, mediaIds));
+            @RequestParam long userId,
+            @RequestParam int zoneId,
+            @RequestParam String mediaIds,
+            @RequestParam(defaultValue ="",required = false) String countryIds) {
+        return ResultModel.OK(adiAuthorityService.modifyUserTrialMedia(userId, zoneId, mediaIds,countryIds));
     }
 
     @RequestMapping(value = "/listUserCategory")
@@ -105,7 +103,23 @@ public class AdiAuthorityAction {
         return ResultModel.OK(adiAuthorityService.listUserMedia(userId, zoneId));
     }
 
+    @RequestMapping(value = "/modifyUserCountry", method = RequestMethod.POST)
+    @ApiOperation(value = "创建用户国家", notes = "", httpMethod = "POST", response = ResultModel.class)
+    @RequiresPermissions("userpage")
+    public ResultModel modifyUserCountry(
+            @RequestParam(defaultValue = "") long userId,
+            @RequestParam(defaultValue = "") String countryIds) {
+        return ResultModel.OK(adiAuthorityService.modifyUserCountry(userId, countryIds));
+    }
 
+
+    @RequestMapping(value = "/listUserCountry")
+    @ApiOperation(value = "获取用户国家", notes = "", httpMethod = "GET", response = ResultModel.class)
+    @RequiresPermissions("userpage")
+    public ResultModel listUserCountry(
+            long userId) {
+        return ResultModel.OK(adiAuthorityService.listUserCountry(userId));
+    }
 
 
 }
