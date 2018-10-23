@@ -64,7 +64,13 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
 
             }
         };
-        return mediaRepository.findAll(querySpecifi);
+        List<Media> list = mediaRepository.findAll(querySpecifi);
+
+        for (Media media : list) {
+            media.setMediaId(media.getId());
+            media.setMediaName(media.getName());
+        }
+        return list;
     }
 
     @Override
@@ -257,10 +263,10 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
     }
 
     @Override
-    public int modifyUserTrialMedia(long userId, int zoneId, String mediaIds,String countryIds) {
+    public int modifyUserTrialMedia(long userId, int zoneId, String mediaIds, String countryIds) {
         deleteUserTrilMedia(userId);
-        if(StringUtils.isNotEmpty(countryIds)){
-            modifyUserCountry(userId,countryIds);
+        if (StringUtils.isNotEmpty(countryIds)) {
+            modifyUserCountry(userId, countryIds);
         }
         return createUserTrialMedia(userId, zoneId, mediaIds);
 
@@ -309,7 +315,7 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
 
         List<UserCountry> userCountries = new ArrayList<>();
         for (String id : idArray) {
-            Long  longId =Long.parseLong(id);
+            Long longId = Long.parseLong(id);
             String countryName = countryHashMap.get(longId).getName();
             UserCountry userCountry = new UserCountry();
             userCountry.setUserId(userId);

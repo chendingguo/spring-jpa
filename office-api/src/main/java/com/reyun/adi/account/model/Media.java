@@ -3,6 +3,7 @@ package com.reyun.adi.account.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Date;
 @Entity
@@ -18,6 +19,12 @@ public class Media implements Serializable {
     private Date createTime;
 
     private Integer countryId;
+
+    @Transient
+    private String mediaName;
+
+    @Transient
+    private Long mediaId;
 
 
 
@@ -60,5 +67,21 @@ public class Media implements Serializable {
 
     public void setCountryId(Integer countryId) {
         this.countryId = countryId;
+    }
+
+    public String getMediaName() {
+        return mediaName;
+    }
+
+    public void setMediaName(String mediaName) {
+        this.mediaName = mediaName;
+    }
+
+    public Long getMediaId() {
+        return mediaId;
+    }
+
+    public void setMediaId(Long mediaId) {
+        this.mediaId = mediaId;
     }
 }
