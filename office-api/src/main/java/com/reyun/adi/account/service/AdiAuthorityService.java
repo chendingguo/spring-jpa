@@ -10,7 +10,7 @@ import java.util.Map;
 public interface AdiAuthorityService {
     /**
      * 根据国家获取媒体列表
-     * @param countryId
+     * @param countryIds
      * @return
      */
 
@@ -53,7 +53,7 @@ public interface AdiAuthorityService {
      * @return
      */
 
-     int createUserTrialCategory(long userId,int zoneId,String catIds);
+     int createUserTrialCategory(long userId, int zoneId, String catIds);
 
     /**
      * 删除用户产品权限
@@ -71,7 +71,7 @@ public interface AdiAuthorityService {
      * @return
      */
 
-     int modifyUserTrialCategory(long userId,int zoneId,String catIds);
+     int modifyUserTrialCategory(long userId, int zoneId, String catIds);
 
 
     /**
@@ -89,6 +89,7 @@ public interface AdiAuthorityService {
      */
 
     int deleteUserTrilMedia(long userId);
+    int deleteUserCountry(long userId);
     /**
      * 创建用户媒体权限
      * @param userId
@@ -96,7 +97,7 @@ public interface AdiAuthorityService {
      * @param mediaIds
      * @return
      */
-    int createUserTrialMedia(long userId,int zoneId,String mediaIds);
+    int createUserTrialMedia(long userId, int zoneId, String mediaIds);
 
 
     /**
@@ -107,14 +108,14 @@ public interface AdiAuthorityService {
      * @return
      */
 
-    int modifyUserTrialMedia(long userId,int zoneId,String mediaIds,String countryIds);
+    int modifyUserTrialMedia(long userId, int zoneId, String mediaIds, String countryIds);
 
     /**
      * 获取 用户可见媒体列表
      * @param userId
      * @returnMedia
      */
-    List<UserTrialMedia> listUserMedia(long userId,int zoneId);
+    List<UserTrialMedia> listUserMedia(long userId, int zoneId);
 
 
     /**
@@ -125,7 +126,7 @@ public interface AdiAuthorityService {
 
     List<UserCountry> listUserCountry(long userId);
 
-    int  modifyUserCountry(long userId,String countryIds);
+    int  modifyUserCountry(long userId, String countryIds);
 
 
 }

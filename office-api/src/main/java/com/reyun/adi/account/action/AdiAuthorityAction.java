@@ -6,6 +6,7 @@ import com.reyun.adi.account.dic.StatusEnum;
 import com.reyun.adi.account.dic.TypeEnum;
 import com.reyun.adi.account.service.AdiAuthorityService;
 import com.reyun.framework.model.ResultModel;
+import com.reyun.framework.model.ResultStatus;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -81,8 +82,8 @@ public class AdiAuthorityAction {
             @RequestParam long userId,
             @RequestParam int zoneId,
             @RequestParam String mediaIds,
-            @RequestParam(defaultValue ="",required = false) String countryIds) {
-        return ResultModel.OK(adiAuthorityService.modifyUserTrialMedia(userId, zoneId, mediaIds,countryIds));
+            @RequestParam(defaultValue = "", required = false) String countryIds) {
+        return ResultModel.OK(adiAuthorityService.modifyUserTrialMedia(userId, zoneId, mediaIds, countryIds));
     }
 
     @RequestMapping(value = "/listUserCategory")
@@ -119,6 +120,28 @@ public class AdiAuthorityAction {
     public ResultModel listUserCountry(
             long userId) {
         return ResultModel.OK(adiAuthorityService.listUserCountry(userId));
+    }
+
+
+    @RequestMapping(value = "/modifyUserCatAndMedia", method = RequestMethod.POST)
+    @ApiOperation(value = "创建用户分类权限和媒体", notes = "", httpMethod = "POST", response = ResultModel.class)
+    @RequiresPermissions("userpage")
+    public ResultModel modifyUserCatAndMedia(
+            @RequestParam long userId,
+            @RequestParam int zoneId,
+            @RequestParam(defaultValue = "") String catIds,
+            @RequestParam(defaultValue = "") String mediaIds,
+            @RequestParam(defaultValue = "", required = false) String countryIds) {
+
+        int catResult = adiAuthorityService.modifyUserTrialCategory(userId, zoneId, catIds);
+        int mediaResult = adiAuthorityService.modifyUserTrialMedia(userId, zoneId, mediaIds, countryIds);
+        if (catResult > -1 && mediaResult > -1) {
+            return ResultModel.OK(mediaResult+catResult);
+        } else {
+            return ResultModel.ERROR(ResultStatus.UPDATE_FAILED);
+        }
+
+
     }
 
 

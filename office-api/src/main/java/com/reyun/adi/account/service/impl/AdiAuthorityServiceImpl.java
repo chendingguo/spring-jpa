@@ -4,6 +4,7 @@ import com.reyun.adi.account.model.*;
 import com.reyun.adi.account.repository.*;
 import com.reyun.adi.account.service.AdiAuthorityService;
 import org.apache.commons.lang.StringUtils;
+import org.jsoup.helper.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
@@ -40,11 +41,8 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
     @Autowired
     UserCountryRepository userCountryRepository;
 
-
     @Override
     public List<Media> listMediaByCountry(String countryIds) {
-
-
         Specification querySpecifi = new Specification<Media>() {
             @Override
             public Predicate toPredicate(Root<Media> root, CriteriaQuery<?> criteriaQuery,
@@ -56,7 +54,6 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
                     String[] countryIdArray = countryIds.split(",");
                     for (String countryId : countryIdArray) {
                         in.value(Integer.parseInt(countryId));
-
                     }
                     return criteriaBuilder.and(in);
                 }
@@ -65,12 +62,19 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
             }
         };
         List<Media> list = mediaRepository.findAll(querySpecifi);
+        List<Long> markList = new ArrayList<>();
 
+        //排重
+        List<Media> noRepeatElementsList = new ArrayList<>();
         for (Media media : list) {
+
             media.setMediaId(media.getId());
             media.setMediaName(media.getName());
+            if (!markList.contains(media.getId())) {
+                noRepeatElementsList.add(media);
+            }
         }
-        return list;
+        return noRepeatElementsList;
     }
 
     @Override
@@ -205,8 +209,11 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
     @Transactional
     public int modifyUserTrialCategory(long userId, int zoneId, String catIds) {
         deleteUserTrilCategory(userId);
-        int insetResult = createUserTrialCategory(userId, zoneId, catIds);
-        return insetResult;
+        if (StringUtils.isNotEmpty(catIds)) {
+            int insertResult = createUserTrialCategory(userId, zoneId, catIds);
+            return insertResult;
+        }
+        return 0;
     }
 
     @Override
@@ -222,6 +229,12 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
     public int deleteUserTrilMedia(long userId) {
 
         return userTrialMediaRepository.deleteByUserId(userId);
+    }
+
+    @Override
+    public int deleteUserCountry(long userId) {
+
+        return userCountryRepository.deleteByUserId(userId);
     }
 
     @Override
@@ -265,10 +278,16 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
     @Override
     public int modifyUserTrialMedia(long userId, int zoneId, String mediaIds, String countryIds) {
         deleteUserTrilMedia(userId);
-        if (StringUtils.isNotEmpty(countryIds)) {
+        if (StringUtils.isNotEmpty(countryIds) && !"".equals(countryIds)) {
             modifyUserCountry(userId, countryIds);
+        } else {
+            deleteUserCountry(userId);
         }
-        return createUserTrialMedia(userId, zoneId, mediaIds);
+        if (StringUtils.isNotEmpty(mediaIds)) {
+            return createUserTrialMedia(userId, zoneId, mediaIds);
+        } else {
+            return 0;
+        }
 
 
     }
