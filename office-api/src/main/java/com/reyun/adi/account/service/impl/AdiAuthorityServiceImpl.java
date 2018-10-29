@@ -4,7 +4,6 @@ import com.reyun.adi.account.model.*;
 import com.reyun.adi.account.repository.*;
 import com.reyun.adi.account.service.AdiAuthorityService;
 import org.apache.commons.lang.StringUtils;
-import org.jsoup.helper.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
@@ -12,11 +11,18 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.criteria.*;
 import java.util.*;
 
 @Service
 public class AdiAuthorityServiceImpl implements AdiAuthorityService {
+    @PersistenceContext
+    EntityManager em;
+
+
     @Autowired
     ProductTypeRepository productTypeRepository;
 
@@ -43,6 +49,10 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
 
     @Override
     public List<Media> listMediaByCountry(String countryIds) {
+        //国家为空时返回判断
+        if(StringUtils.isEmpty(countryIds)){
+            return new ArrayList<>();
+        }
         Specification querySpecifi = new Specification<Media>() {
             @Override
             public Predicate toPredicate(Root<Media> root, CriteriaQuery<?> criteriaQuery,
@@ -181,7 +191,7 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
             typeMap.put(productCategory.getId(), productCategory.getTypeId());
         }
 
-
+        StringBuilder sqlBuilder =new StringBuilder("insert into  user_trial_category (user_id,type_id,cat_id,zone_id) values");
         List<UserTrialCategory> userTrailCategories = new ArrayList<>();
         for (String catId : catIdArray) {
             UserTrialCategory userTrailCategory = new UserTrialCategory();
@@ -192,10 +202,24 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
             userTrailCategory.setCreatedTime(new Date());
             userTrailCategory.setModifyTime(new Date());
             userTrailCategory.setZoneId(zoneId);
+
             userTrailCategories.add(userTrailCategory);
+            sqlBuilder.append("(");
+            sqlBuilder.append(userTrailCategory.getUserId()).append(",");
+            sqlBuilder.append(userTrailCategory.getTypeId()).append(",");
+            sqlBuilder.append(userTrailCategory.getCatId()).append(",");
+            sqlBuilder.append(userTrailCategory.getZoneId());
+            sqlBuilder.append(")").append(",");
+
         }
-        List list = userTrailCatRepository.save(userTrailCategories);
-        return list.size();
+        //List list = userTrailCatRepository.save(userTrailCategories);
+//        em.flush();
+//        em.clear();
+      String sql=sqlBuilder.deleteCharAt(sqlBuilder.lastIndexOf(",")).toString();
+       Query query = em.createNativeQuery(sql);
+        query.executeUpdate();
+
+        return userTrailCategories.size();
 
 
     }
@@ -255,7 +279,7 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
             mediaMap.put(media.getId(), media);
         }
 
-
+        StringBuilder sqlBuilder =new StringBuilder("insert into  user_trial_media (user_id,media_id,media_name,zone_id) values");
         List<UserTrialMedia> userTrialMediaList = new ArrayList<>();
         for (String id : idArray) {
             Long mediaId = Long.parseLong(id);
@@ -270,12 +294,26 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
             userTrialMedia.setModifyTime(new Date());
             userTrialMediaList.add(userTrialMedia);
 
+            sqlBuilder.append("(");
+            sqlBuilder.append(userTrialMedia.getUserId()).append(",");
+            sqlBuilder.append(userTrialMedia.getMediaId()).append(",");
+            sqlBuilder.append("'"+userTrialMedia.getMediaName()+"'").append(",");
+            sqlBuilder.append(userTrialMedia.getZoneId());
+            sqlBuilder.append(")").append(",");
+
         }
-        return userTrialMediaRepository.save(userTrialMediaList).size();
+
+        String sql=sqlBuilder.deleteCharAt(sqlBuilder.lastIndexOf(",")).toString();
+        Query query = em.createNativeQuery(sql);
+
+
+
+        return  query.executeUpdate();
 
     }
 
     @Override
+    @Transactional
     public int modifyUserTrialMedia(long userId, int zoneId, String mediaIds, String countryIds) {
         deleteUserTrilMedia(userId);
         if (StringUtils.isNotEmpty(countryIds) && !"".equals(countryIds)) {
