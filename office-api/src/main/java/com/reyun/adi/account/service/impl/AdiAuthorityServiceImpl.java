@@ -27,6 +27,9 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
     ProductTypeRepository productTypeRepository;
 
     @Autowired
+    AdiUserRepository adiUserRepository;
+
+    @Autowired
     ProductCategoryRepository productCategoryRepository;
 
     @Autowired
@@ -225,14 +228,14 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
     }
 
     @Override
-    public int deleteUserTrilCategory(long userId) {
-        return userTrailCatRepository.deleteByUserId(userId);
+    public int deleteUserTrilCategory(long userId,int zoneId) {
+        return userTrailCatRepository.deleteByUserId(userId,zoneId);
     }
 
     @Override
     @Transactional
     public int modifyUserTrialCategory(long userId, int zoneId, String catIds) {
-        deleteUserTrilCategory(userId);
+        deleteUserTrilCategory(userId,zoneId);
         if (StringUtils.isNotEmpty(catIds)) {
             int insertResult = createUserTrialCategory(userId, zoneId, catIds);
             return insertResult;
@@ -250,9 +253,9 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
     }
 
     @Override
-    public int deleteUserTrilMedia(long userId) {
+    public int deleteUserTrilMedia(long userId,int zoneId) {
 
-        return userTrialMediaRepository.deleteByUserId(userId);
+        return userTrialMediaRepository.deleteByUserId(userId,zoneId);
     }
 
     @Override
@@ -315,7 +318,7 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
     @Override
     @Transactional
     public int modifyUserTrialMedia(long userId, int zoneId, String mediaIds, String countryIds) {
-        deleteUserTrilMedia(userId);
+        deleteUserTrilMedia(userId,zoneId);
         if (StringUtils.isNotEmpty(countryIds) && !"".equals(countryIds)) {
             modifyUserCountry(userId, countryIds);
         } else {
@@ -385,5 +388,12 @@ public class AdiAuthorityServiceImpl implements AdiAuthorityService {
         return userCountryRepository.save(userCountries).size();
 
 
+    }
+
+    @Override
+    public User modifyUserZone(long userId, int zoneId) {
+        User user = adiUserRepository.findOne(userId);
+        user.setZoneId(zoneId);
+        return adiUserRepository.save(user);
     }
 }

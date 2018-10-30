@@ -13,8 +13,8 @@ public interface UserTrialMediaRepository extends JpaRepository<UserTrialMedia, 
 
     @Modifying
     @Transactional
-    @Query(value="delete from user_trial_media  where user_id = :userId", nativeQuery = true)
+    @Query(value="delete from user_trial_media  where user_id = :userId and zone_id= :zoneId", nativeQuery = true)
 
-    int   deleteByUserId(@Param("userId") Long userId);
+    int   deleteByUserId(@Param("userId") Long userId, @Param("zoneId") int zoneId);
 
 }

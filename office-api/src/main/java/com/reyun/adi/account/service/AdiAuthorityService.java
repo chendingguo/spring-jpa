@@ -61,7 +61,7 @@ public interface AdiAuthorityService {
      * @return
      */
 
-     int deleteUserTrilCategory(long userId);
+     int deleteUserTrilCategory(long userId, int zoneId);
 
     /**
      * 修改用户产品分类
@@ -88,7 +88,7 @@ public interface AdiAuthorityService {
      * @return
      */
 
-    int deleteUserTrilMedia(long userId);
+    int deleteUserTrilMedia(long userId, int zoneId);
     int deleteUserCountry(long userId);
     /**
      * 创建用户媒体权限
@@ -129,4 +129,5 @@ public interface AdiAuthorityService {
     int  modifyUserCountry(long userId, String countryIds);
 
 
+    User modifyUserZone(long userId, int zoneId);
 }

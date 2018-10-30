@@ -13,7 +13,7 @@ public interface UserTrialCategoryRepository extends JpaRepository<UserTrialCate
 
     @Modifying
     @Transactional
-    @Query(value="delete from user_trial_category  where user_id = :userId" , nativeQuery = true)
-    int   deleteByUserId(@Param("userId") Long userId);
+    @Query(value="delete from user_trial_category  where user_id = :userId and zone_id= :zoneId" , nativeQuery = true)
+    int   deleteByUserId(@Param("userId") Long userId,@Param("zoneId") int zoneId);
 
 }

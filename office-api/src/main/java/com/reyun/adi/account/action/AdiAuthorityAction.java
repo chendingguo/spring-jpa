@@ -1,9 +1,5 @@
 package com.reyun.adi.account.action;
 
-import com.reyun.adi.account.dic.AdiErrorCodeEnum;
-import com.reyun.adi.account.dic.PackageEnum;
-import com.reyun.adi.account.dic.StatusEnum;
-import com.reyun.adi.account.dic.TypeEnum;
 import com.reyun.adi.account.service.AdiAuthorityService;
 import com.reyun.framework.model.ResultModel;
 import com.reyun.framework.model.ResultStatus;
@@ -16,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
-
 @RestController
 @RequestMapping(value = "/adi/auth")
 @Api(value = "/api/adi/auth", description = "媒体管理", position = 12)
@@ -28,6 +22,14 @@ public class AdiAuthorityAction {
     AdiAuthorityService adiAuthorityService;
 
 
+    @RequestMapping(value = "/modifyUserZone", method = RequestMethod.POST)
+    @ApiOperation(value = "保存用户区域权限", notes = "", httpMethod = "POST", response = ResultModel.class)
+    @RequiresPermissions("userpage")
+    public ResultModel modifyUserZone(
+        @RequestParam long userId,
+        @RequestParam(defaultValue = "") int zoneId) {
+        return ResultModel.OK(adiAuthorityService.modifyUserZone(userId, zoneId));
+    }
     @ApiOperation(value = "获取产品分类", notes = "", httpMethod = "GET", response = ResultModel.class)
     @RequestMapping(value = "/listProductCategory", method = RequestMethod.GET)
     public ResultModel listProductCategory() {
@@ -37,7 +39,7 @@ public class AdiAuthorityAction {
 
     @ApiOperation(value = "媒体管理", notes = "", httpMethod = "GET", response = ResultModel.class)
     @RequestMapping(value = "/listMediaByCountry", method = RequestMethod.GET)
-    public ResultModel listMediaByCountry(@RequestParam(required = false, defaultValue = "1") String countryId) {
+    public ResultModel listMediaByCountry(@RequestParam(required = false, defaultValue = "") String countryId) {
 
         return ResultModel.OK(adiAuthorityService.listMediaByCountry(countryId));
     }
